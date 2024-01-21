@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+struct FlagImage: ViewModifier{
+    func body(content: Content) -> some View {
+        content
+            .border(Color.black)
+            .clipShape(.capsule)
+            .shadow(radius: 5)
+    }
+}
+
+struct MakeProminent: ViewModifier{
+    func body(content: Content) -> some View {
+        content
+            .foregroundColor(.accentColor)
+            .font(.largeTitle.bold())
+    }
+}
+
+extension View {
+    func makeProminant() -> some View{
+        modifier(MakeProminent())
+    }
+}
+
 struct ContentView: View {
     @State private var countries = ["ესტონეთი", "საფრანგეთი", "გერმანია", "ირლანდია", "იტალია", "ნიგერია", "პოლონეთი", "ესპანეთი", "ბრიტანეთი", "უკრაინა", "ამერიკა"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
@@ -29,9 +52,10 @@ struct ContentView: View {
             
             VStack{
                 Text("რა დროშა მოგვცა მიშამა?")
-                    .font(.largeTitle.bold())
+                    .makeProminant()
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.center)
+                    
                 Spacer()
                 VStack(spacing: 15){
                     VStack{
@@ -47,9 +71,7 @@ struct ContentView: View {
                             flagTapped(number)
                         } label: {
                             Image(countries[number])
-                                .border(Color.black)
-                                .clipShape(.capsule)
-                                .shadow(radius: 5)
+                                .modifier(FlagImage())
                         }
                     }
                 }
